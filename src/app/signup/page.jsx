@@ -129,7 +129,7 @@ export default function SignupPage() {
           <CardFooter className="flex flex-col gap-2">
             <Button
               type="submit"
-              className="w-full"
+              className="w-full"cd 
               disabled={submitting}
             >
               {submitting ? "Creating account..." : "Sign Up"}

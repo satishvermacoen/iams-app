@@ -1,26 +1,36 @@
 // src/models/ExamResult.js
 import mongoose from "mongoose";
 
-const examResultSchema = new mongoose.Schema(
+const ExamResultSchema = new mongoose.Schema(
   {
     exam: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Exam",
       required: true,
     },
-    student: {
+    enrollment: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Student",
+      ref: "Enrollment",
       required: true,
     },
-    marksObtained: { type: Number, required: true },
-    grade: { type: String }, // optional; can calculate later
-    resultPublishedAt: { type: Date },
+    marks: {
+      type: Number,
+      default: 0,
+    },
+    grade: {
+      type: String,
+      trim: true,
+    },
+    status: {
+      type: String,
+      enum: ["PRESENT", "ABSENT"],
+      default: "PRESENT",
+    },
   },
   { timestamps: true }
 );
 
-examResultSchema.index({ exam: 1, student: 1 }, { unique: true });
+ExamResultSchema.index({ exam: 1, enrollment: 1 }, { unique: true });
 
 export default mongoose.models.ExamResult ||
-  mongoose.model("ExamResult", examResultSchema);
+  mongoose.model("ExamResult", ExamResultSchema);

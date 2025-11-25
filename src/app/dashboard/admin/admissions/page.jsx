@@ -109,10 +109,7 @@ export default function AdminAdmissionsPage() {
                             <Button
                               size="xs"
                               variant="outline"
-                              disabled={
-                                updateStatus.isLoading ||
-                                app.status === "APPROVED"
-                              }
+                              disabled={updateStatus.isLoading || app.status === "APPROVED"}
                               onClick={() =>
                                 handleStatusChange(app._id, "APPROVED")
                               }
@@ -122,15 +119,26 @@ export default function AdminAdmissionsPage() {
                             <Button
                               size="xs"
                               variant="outline"
-                              disabled={
-                                updateStatus.isLoading ||
-                                app.status === "REJECTED"
-                              }
+                              disabled={updateStatus.isLoading || app.status === "REJECTED"}
                               onClick={() =>
                                 handleStatusChange(app._id, "REJECTED")
                               }
                             >
                               Reject
+                            </Button>
+                            <Button
+                              size="xs"
+                              variant="ghost"
+                              disabled={
+                                app.status !== "APPROVED" || !!app.linkedStudent
+                              }
+                              onClick={() =>
+                                router.push(
+                                  `/dashboard/admin/admissions/${app._id}/create-student`
+                                )
+                              }
+                            >
+                              Create Student
                             </Button>
                           </TableCell>
                         </TableRow>

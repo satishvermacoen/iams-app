@@ -1,23 +1,36 @@
 // src/models/Exam.js
 import mongoose from "mongoose";
 
-const examSchema = new mongoose.Schema(
+const ExamSchema = new mongoose.Schema(
   {
     offering: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "CourseOffering",
       required: true,
     },
-    examType: {
+    title: {
       type: String,
-      enum: ["MIDTERM", "ENDSEM", "QUIZ", "LAB"],
+      required: true,
+      trim: true,
+    },
+    type: {
+      type: String,
+      enum: ["INTERNAL", "MIDTERM", "FINAL", "QUIZ", "PRACTICAL", "OTHER"],
+      default: "INTERNAL",
+    },
+    examDate: {
+      type: Date,
       required: true,
     },
-    examDate: { type: Date, required: true },
-    maxMarks: { type: Number, required: true },
-    weightagePercent: { type: Number, required: true }, // part of final grade
+    maxMarks: {
+      type: Number,
+      required: true,
+    },
+    weightage: {
+      type: Number, // e.g. 20 for 20% of total grade
+    },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Exam || mongoose.model("Exam", examSchema);
+export default mongoose.models.Exam || mongoose.model("Exam", ExamSchema);
