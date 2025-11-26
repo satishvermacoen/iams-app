@@ -28,8 +28,8 @@ export function useCourseOfferingsAdmin(filters) {
       if (search) params.set("search", search);
       const qs = params.toString();
       const url = qs
-        ? `/api/admin-course-offerings?${qs}`
-        : "/api/admin-course-offerings";
+        ? `/api/course-offerings?${qs}`
+        : "/api/course-offerings";
       return apiGet(url);
     },
   });
@@ -39,7 +39,7 @@ export function useCreateOffering() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (payload) => {
-      const res = await authFetch("/api/admin-course-offerings", {
+      const res = await authFetch("/api/course-offerings", {
         method: "POST",
         body: JSON.stringify(payload),
       });
@@ -57,7 +57,7 @@ export function useUpdateOffering() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...payload }) => {
-      const res = await authFetch(`/api/admin-course-offerings/${id}`, {
+      const res = await authFetch(`/api/course-offerings/${id}`, {
         method: "PATCH",
         body: JSON.stringify(payload),
       });
@@ -75,7 +75,7 @@ export function useDeleteOffering() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id) => {
-      const res = await authFetch(`/api/admin-course-offerings/${id}`, {
+      const res = await authFetch(`/api/course-offerings/${id}`, {
         method: "DELETE",
       });
       const data = await res.json().catch(() => ({}));

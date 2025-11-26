@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const DB_NAME = "iams_db";
 
 const MONGODB_URI = process.env.MONGODB_URI;
-console.log("MONGODB_URI:", MONGODB_URI);
+// console.log("MONGODB_URI:", MONGODB_URI);
 // To avoid multiple connections in Next.js hot-reload / serverless
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable in .env.local");
