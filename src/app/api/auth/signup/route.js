@@ -9,7 +9,7 @@ export async function POST(req) {
   try {
     await connectDB();
     const body = await req.json();
-    const { email, password, fullName, roleName = "STUDENT" } = body;
+    const { email, password, fullName, roleName } = body;
 
     if (!email || !password || !fullName) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });

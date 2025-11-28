@@ -5,9 +5,12 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useAdminDashboard } from "@/hooks/useAdminDashboard";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function AdminDashboardPage() {
   const { data, isLoading, error } = useAdminDashboard();
+  const router = useRouter();
 
   const stats = data?.stats || {
     pendingApplications: 0,
@@ -36,6 +39,11 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-6 p-4 md:p-8">
+      <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
+        <Link href="/dashboard" className="hover:underline">Dashboard</Link>
+        <span className="mx-1">/</span>
+        <span className="text-foreground">Admin</span>
+      </nav>
       <header className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h1 className="text-2xl font-bold">Admin Dashboard</h1>

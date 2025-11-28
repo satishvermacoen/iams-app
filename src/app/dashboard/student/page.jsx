@@ -4,6 +4,8 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function StudentDashboardPage() {
   // TODO: fetch dashboard data from /api/students/me, /api/attendance/records, /api/exams/results
@@ -17,8 +19,15 @@ export default function StudentDashboardPage() {
     { course: "MA201", type: "QUIZ", date: "2025-12-08" },
   ];
 
+  const router = useRouter();
+
   return (
     <div className="space-y-6 p-4 md:p-8">
+      <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
+        <Link href="/dashboard" className="hover:underline">Dashboard</Link>
+        <span className="mx-1">/</span>
+        <span className="text-foreground">Student</span>
+      </nav>
       <header className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Student Dashboard</h1>
@@ -26,7 +35,10 @@ export default function StudentDashboardPage() {
             View your courses, attendance, and upcoming exams.
           </p>
         </div>
-        <Button variant="outline">Download Transcript (soon)</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => router.push("/dashboard/student/enrollments")}>My Enrollments</Button>
+          <Button variant="outline" onClick={() => router.push("/dashboard/student/timetable")}>View Timetable</Button>
+        </div>
       </header>
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -86,7 +98,8 @@ export default function StudentDashboardPage() {
                       </p>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      Attendance: {c.attendance}
+                      <span className="mr-2">Attendance: {c.attendance}</span>
+                      <Button size="sm" variant="outline" onClick={() => router.push("/dashboard/student/attendance")}>Details</Button>
                     </div>
                   </div>
                 ))}
@@ -104,6 +117,9 @@ export default function StudentDashboardPage() {
               <p className="text-sm text-muted-foreground">
                 Later connect this to <code>/api/attendance/records</code> for the logged-in student.
               </p>
+              <div className="mt-3">
+                <Button size="sm" onClick={() => router.push("/dashboard/student/attendance")}>Go to Attendance</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -124,6 +140,10 @@ export default function StudentDashboardPage() {
                   </li>
                 ))}
               </ul>
+              <div className="mt-3 flex gap-2">
+                <Button size="sm" onClick={() => router.push("/dashboard/student/exams")}>View All Exams</Button>
+                <Button size="sm" variant="outline" onClick={() => router.push("/dashboard/student/results")}>View Results</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

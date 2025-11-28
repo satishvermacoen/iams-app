@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     passwordHash: {
       type: String,
-      required: true, // you can make optional for Google login later
+      required: true, 
     },
     fullName: {
       type: String,

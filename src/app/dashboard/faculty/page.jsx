@@ -4,6 +4,8 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function FacultyDashboardPage() {
   // TODO: fetch from /api/courses-offered, /api/attendance/sessions, /api/exams
@@ -17,8 +19,15 @@ export default function FacultyDashboardPage() {
     { course: "CS102", time: "11:00 - 12:00", section: "B" },
   ];
 
+  const router = useRouter();
+
   return (
     <div className="space-y-6 p-4 md:p-8">
+      <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
+        <Link href="/dashboard" className="hover:underline">Dashboard</Link>
+        <span className="mx-1">/</span>
+        <span className="text-foreground">Faculty</span>
+      </nav>
       <header className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Faculty Dashboard</h1>
@@ -26,7 +35,7 @@ export default function FacultyDashboardPage() {
             Manage attendance, exams, and student performance.
           </p>
         </div>
-        <Button variant="outline">View My Profile</Button>
+        <Button variant="outline" onClick={() => router.push("/dashboard/faculty/timetable")}>View My Timetable</Button>
       </header>
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -87,9 +96,21 @@ export default function FacultyDashboardPage() {
                       Section {c.section}
                     </p>
                   </div>
-                  <Button size="sm" variant="outline">
-                    View Students
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => router.push(`/dashboard/faculty/attendance/${c.code}-${c.section}`)}
+                    >
+                      View Students
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => router.push(`/dashboard/faculty/offering-exams/${c.code}-${c.section}`)}
+                    >
+                      Manage Exams
+                    </Button>
+                  </div>
                 </div>
               ))}
             </CardContent>
@@ -106,7 +127,12 @@ export default function FacultyDashboardPage() {
                 Integrate this with <code>/api/attendance/sessions</code> and{" "}
                 <code>/api/attendance/records</code>.
               </p>
-              <Button>Start New Attendance Session</Button>
+              <div className="flex gap-2">
+                <Button onClick={() => router.push(`/dashboard/faculty/attendance/${myCourses[0].code}-${myCourses[0].section}`)}>
+                  Start New Attendance Session
+                </Button>
+                <Button variant="outline" onClick={() => router.push("/dashboard/faculty/timetable")}>Go to Timetable</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -117,8 +143,12 @@ export default function FacultyDashboardPage() {
               <CardTitle>Exam Management</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button>Create Exam</Button>
-              <Button variant="outline">Enter Marks</Button>
+              <Button onClick={() => router.push(`/dashboard/faculty/offering-exams/${myCourses[0].code}-${myCourses[0].section}`)}>
+                Create Exam
+              </Button>
+              <Button variant="outline" onClick={() => router.push(`/dashboard/faculty/offering-exams/${myCourses[0].code}-${myCourses[0].section}`)}>
+                Enter Marks
+              </Button>
               <p className="text-xs text-muted-foreground">
                 Use <code>/api/exams</code> and <code>/api/exams/results</code> for data.
               </p>
