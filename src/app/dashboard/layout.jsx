@@ -11,7 +11,6 @@ import { getToken, clearAuth, roleToDashboardPath } from "@/lib/auth-client";
 const navItems = [
   { href: "/dashboard/student", label: "Student" },
   { href: "/dashboard/student/my-timetable", label: "Timetable" },
-  { href: "/dashboard/student/my-timetable", label: "Timetable" },
   { href: "/dashboard/student/results", label: "Results" },
   { href: "/dashboard/faculty", label: "Faculty" },
   { href: "/dashboard/admin", label: "Admin" },

@@ -13,7 +13,8 @@ export async function GET(req, { params }) {
     ]);
     if (error) return NextResponse.json({ message: error }, { status });
 
-    const app = await AdmissionApplication.findById(params.id)
+    const { id } = await params;
+    const app = await AdmissionApplication.findById(id)
       .populate("program")
       .lean();
 
@@ -41,7 +42,8 @@ export async function PATCH(req, { params }) {
     const body = await req.json();
     const { status: newStatus } = body;
 
-    const app = await AdmissionApplication.findById(params.id);
+    const { id } = await params;
+    const app = await AdmissionApplication.findById(id);
     if (!app) {
       return NextResponse.json({ message: "Application not found" }, { status: 404 });
     }

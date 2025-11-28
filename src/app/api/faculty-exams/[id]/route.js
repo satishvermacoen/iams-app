@@ -15,7 +15,8 @@ export async function GET(req, { params }) {
     ]);
     if (error) return NextResponse.json({ message: error }, { status });
 
-    const exam = await Exam.findById(params.id)
+    const { id } = await params;
+    const exam = await Exam.findById(id)
       .populate({
         path: "offering",
         populate: [{ path: "course" }, { path: "semester" }],
@@ -46,7 +47,8 @@ export async function PATCH(req, { params }) {
     const body = await req.json();
     const { title, type, examDate, maxMarks, weightage } = body;
 
-    const exam = await Exam.findById(params.id);
+    const { id } = await params;
+    const exam = await Exam.findById(id);
     if (!exam) {
       return NextResponse.json({ message: "Exam not found" }, { status: 404 });
     }
@@ -83,7 +85,8 @@ export async function DELETE(req, { params }) {
     ]);
     if (error) return NextResponse.json({ message: error }, { status });
 
-    const exam = await Exam.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const exam = await Exam.findByIdAndDelete(id);
     if (!exam) {
       return NextResponse.json({ message: "Exam not found" }, { status: 404 });
     }

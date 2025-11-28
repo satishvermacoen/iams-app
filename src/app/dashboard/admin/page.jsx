@@ -51,7 +51,18 @@ export default function AdminDashboardPage() {
             Monitor admissions, students, and academic operations.
           </p>
         </div>
-        <Button variant="outline">Export Reports</Button>
+        <div className="flex gap-2">
+          <Button variant="outline">Export Reports</Button>
+          <Button size="sm" variant="outline" onClick={() => router.push("/dashboard/admin/admissions")}>
+            Manage Admissions
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => router.push("/dashboard/admin/students")}>
+            View Students
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => router.push("/dashboard/admin/users/create")}>
+            Create User
+          </Button>
+        </div>
       </header>
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -152,15 +163,6 @@ export default function AdminDashboardPage() {
               </p>
             </CardContent>
           </Card>
-          <Button size="sm" variant="outline" onClick={() => router.push("/dashboard/admin/admissions")}>
-  Manage Admissions
-</Button>
-<Button size="sm" variant="outline" onClick={() => router.push("/dashboard/admin/students")}>
-  View Students
-</Button>
-<Button size="sm" variant="outline" onClick={() => router.push("/dashboard/admin/users/create")}>
-  Create User
-</Button>
         </TabsContent>
       </Tabs>
     </div>

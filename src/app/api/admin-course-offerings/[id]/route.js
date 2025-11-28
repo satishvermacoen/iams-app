@@ -17,7 +17,8 @@ export async function GET(req, { params }) {
     ]);
     if (error) return NextResponse.json({ message: error }, { status });
 
-    const offering = await CourseOffering.findById(params.id)
+    const { id } = await params;
+    const offering = await CourseOffering.findById(id)
       .populate("course")
       .populate("program")
       .populate("semester")
@@ -54,7 +55,8 @@ export async function PATCH(req, { params }) {
       scheduleText,
     } = body;
 
-    const offering = await CourseOffering.findById(params.id);
+    const { id } = await params;
+    const offering = await CourseOffering.findById(id);
     if (!offering) {
       return NextResponse.json({ message: "Not found" }, { status: 404 });
     }
@@ -146,7 +148,8 @@ export async function DELETE(req, { params }) {
     ]);
     if (error) return NextResponse.json({ message: error }, { status });
 
-    const offering = await CourseOffering.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const offering = await CourseOffering.findByIdAndDelete(id);
     if (!offering) {
       return NextResponse.json({ message: "Not found" }, { status: 404 });
     }

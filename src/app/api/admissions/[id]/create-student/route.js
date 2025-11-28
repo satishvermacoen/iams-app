@@ -35,7 +35,8 @@ export async function POST(req, { params }) {
       );
     }
 
-    const app = await AdmissionApplication.findById(params.id).populate("program");
+    const { id } = await params;
+    const app = await AdmissionApplication.findById(id).populate("program");
     if (!app) {
       return NextResponse.json(
         { message: "Admission application not found" },

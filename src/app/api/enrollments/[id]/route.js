@@ -12,7 +12,7 @@ export async function DELETE(req, { params }) {
     const { user, error, status } = await requireRole(req, ["STUDENT"]);
     if (error) return NextResponse.json({ message: error }, { status });
 
-    const { id } = params;
+    const { id } = await params;
     const student = await Student.findOne({ user: user.userId });
     if (!student) {
       return NextResponse.json({ message: "Student profile not found" }, { status: 404 });

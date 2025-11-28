@@ -7,17 +7,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function FacultyDashboardPage() {
-  // TODO: fetch from /api/courses-offered, /api/attendance/sessions, /api/exams
-  const myCourses = [
-    { code: "CS101", name: "Intro to Programming", section: "A" },
-    { code: "CS102", name: "Data Structures", section: "B" },
-  ];
+import { useFacultyOfferingsMe } from "@/hooks/useFacultyOfferingsMe";
 
-  const todaySessions = [
-    { course: "CS101", time: "09:00 - 10:00", section: "A" },
-    { course: "CS102", time: "11:00 - 12:00", section: "B" },
-  ];
+export default function FacultyDashboardPage() {
+  const { data, isLoading } = useFacultyOfferingsMe();
+
+  const myCourses = data?.items || [];
+  const todaySessions = data?.todaySessions || [];
+  const upcomingExams = data?.upcomingExams || [];
 
   const router = useRouter();
 
@@ -62,9 +59,9 @@ export default function FacultyDashboardPage() {
             <CardTitle>Pending Evaluation</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">12</p>
+            <p className="text-3xl font-bold">{upcomingExams.length}</p>
             <p className="text-xs text-muted-foreground">
-              Exams/assignments to grade (placeholder)
+              Exams/assignments to grade
             </p>
           </CardContent>
         </Card>
@@ -83,36 +80,42 @@ export default function FacultyDashboardPage() {
               <CardTitle>Courses</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {myCourses.map((c) => (
-                <div
-                  key={c.code + c.section}
-                  className="flex items-center justify-between rounded-md border p-2"
-                >
-                  <div>
-                    <p className="font-medium">
-                      {c.code} - {c.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Section {c.section}
-                    </p>
+              {isLoading ? (
+                <p className="text-sm text-muted-foreground">Loading courses...</p>
+              ) : myCourses.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No courses assigned.</p>
+              ) : (
+                myCourses.map((c) => (
+                  <div
+                    key={c._id}
+                    className="flex items-center justify-between rounded-md border p-2"
+                  >
+                    <div>
+                      <p className="font-medium">
+                        {c.course?.code} - {c.course?.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Section {c.section}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => router.push(`/dashboard/faculty/attendance/${c._id}`)}
+                      >
+                        View Students
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => router.push(`/dashboard/faculty/offering-exams/${c._id}`)}
+                      >
+                        Manage Exams
+                      </Button>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => router.push(`/dashboard/faculty/attendance/${c.code}-${c.section}`)}
-                    >
-                      View Students
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => router.push(`/dashboard/faculty/offering-exams/${c.code}-${c.section}`)}
-                    >
-                      Manage Exams
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -128,7 +131,14 @@ export default function FacultyDashboardPage() {
                 <code>/api/attendance/records</code>.
               </p>
               <div className="flex gap-2">
-                <Button onClick={() => router.push(`/dashboard/faculty/attendance/${myCourses[0].code}-${myCourses[0].section}`)}>
+                <Button
+                  onClick={() => {
+                    if (myCourses.length > 0) {
+                      router.push(`/dashboard/faculty/attendance/${myCourses[0]._id}`);
+                    }
+                  }}
+                  disabled={myCourses.length === 0}
+                >
                   Start New Attendance Session
                 </Button>
                 <Button variant="outline" onClick={() => router.push("/dashboard/faculty/timetable")}>Go to Timetable</Button>
@@ -143,10 +153,25 @@ export default function FacultyDashboardPage() {
               <CardTitle>Exam Management</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button onClick={() => router.push(`/dashboard/faculty/offering-exams/${myCourses[0].code}-${myCourses[0].section}`)}>
+              <Button
+                onClick={() => {
+                  if (myCourses.length > 0) {
+                    router.push(`/dashboard/faculty/offering-exams/${myCourses[0]._id}`);
+                  }
+                }}
+                disabled={myCourses.length === 0}
+              >
                 Create Exam
               </Button>
-              <Button variant="outline" onClick={() => router.push(`/dashboard/faculty/offering-exams/${myCourses[0].code}-${myCourses[0].section}`)}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  if (myCourses.length > 0) {
+                    router.push(`/dashboard/faculty/offering-exams/${myCourses[0]._id}`);
+                  }
+                }}
+                disabled={myCourses.length === 0}
+              >
                 Enter Marks
               </Button>
               <p className="text-xs text-muted-foreground">

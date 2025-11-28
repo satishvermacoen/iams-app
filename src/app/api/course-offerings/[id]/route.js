@@ -19,7 +19,7 @@ export async function GET(req, { params }) {
         ]);
         if (error) return NextResponse.json({ message: error }, { status });
 
-        const { id } = params;
+        const { id } = await params;
         const offering = await CourseOffering.findById(id)
             .populate("course")
             .populate("semester")
@@ -44,7 +44,7 @@ export async function PATCH(req, { params }) {
         const { user, error, status } = await requireRole(req, ["ADMIN", "SUPER_ADMIN"]);
         if (error) return NextResponse.json({ message: error }, { status });
 
-        const { id } = params;
+        const { id } = await params;
         const body = await req.json();
         const { facultyId, section, maxCapacity, schedule } = body;
 
@@ -79,7 +79,7 @@ export async function DELETE(req, { params }) {
         const { user, error, status } = await requireRole(req, ["ADMIN", "SUPER_ADMIN"]);
         if (error) return NextResponse.json({ message: error }, { status });
 
-        const { id } = params;
+        const { id } = await params;
         const deleted = await CourseOffering.findByIdAndDelete(id);
 
         if (!deleted) {
