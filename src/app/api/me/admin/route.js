@@ -5,6 +5,10 @@ import { requireRole } from "@/lib/auth";
 import AdmissionApplication from "@/models/AdmissionApplication";
 import Student from "@/models/Student";
 import Faculty from "@/models/Faculty";
+// Ensure referenced models are registered
+import "@/models/Program";
+import "@/models/Semester";
+import "@/models/Department";
 
 export async function GET(req) {
   try {
